@@ -1,19 +1,16 @@
-const Influx = require('influx');
+//import InfluxDB client, this is possible thanks to the layer we created
+const { InfluxDB, Point } = require('@influxdata/influxdb-client')
+const { url, token, org, bucket } = require('../../env')
+console.log('URL *****', url)
+console.log('TOKEN *****', token)
+console.log('ORG *****', org)
+console.log('BUCKET *****', bucket)
 
-exports.handler = async (event, context) => {
-  // Configurar la conexión a la base de datos
-  const client = new Influx.InfluxDB({
-    host: '143.244.190.236',
-    port: 8086,
-    protocol: 'http',
-    username: 'omicas',
-    password: 'phenosense',
-    database: 'sensors'
-  });
-  
-  // Realizar una consulta
-  const result = await client.query('SELECT * FROM "MEASUREMENT" LIMIT 10');
-  
-  // Retornar el resultado
-  return result;
-};
+//lambda event handler, this code is ran on every external request
+exports.influxConnection = async (type) => {
+    let result
+    type === 1
+        ? (result = await new InfluxDB({ url, token }).getWriteApi(org, bucket))
+        : (result = await new InfluxDB({ url, token }).getQueryApi(org, bucket))
+    return result
+}

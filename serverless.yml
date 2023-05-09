@@ -5,9 +5,12 @@ provider:
   name: aws
   runtime: nodejs18.x
 
+plugins:
+ - serverless-offline
+ 
 functions:
   hello:
-    handler: handler.hello
+    handler: 'src/functions/handler.hello'
     events:
       - http:
           method: get

@@ -3,9 +3,12 @@
     "prettier": "prettier --write 'src/**/*.js' --list-different"
   },
   "devDependencies": {
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "serverless-offline": "^12.0.4"
   },
   "dependencies": {
+    "@influxdata/influxdb-client": "^1.33.2",
+    "@influxdata/influxdb-client-apis": "^1.33.2",
     "influx": "^5.9.3"
   }
 }
