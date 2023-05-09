@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "prettier": "prettier --write 'src/**/*.js' --list-different"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8"
+  }
+}
