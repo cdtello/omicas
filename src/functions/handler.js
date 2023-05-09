@@ -2,10 +2,18 @@
 
 const { influxConnection } = require('../persistence/influxDbConecction')
 const { readInfluxDB } = require('../services/readInfluxDB')
+const { writeInfluxDB } = require('../services/writeInfluxDB')
 
 module.exports.hello = async (event) => {
-    console.log('Hello')
-    readInfluxDB(event, 'hola')
+    // readInfluxDB(event, 'hola');
+    const testBody = {
+        deveui: 'ac1f09fffe0a9c17',
+        object: {
+            VBatt: 1000,
+            VStepUp: 1000,
+        },
+    }
+    writeInfluxDB(testBody)
     return {
         statusCode: 200,
         body: JSON.stringify(

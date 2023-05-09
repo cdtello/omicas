@@ -1,25 +1,24 @@
 const { influxConnection } = require('../persistence/influxDbConecction')
+const { Point } = require('@influxdata/influxdb-client')
+const { formatData } = require('../utils/formatData')
 
-exports.readInfluxDB = async (event, query) => {
+exports.writeInfluxDB = async (dataIn) => {
     const connection = await influxConnection(1)
 
-    // parse the expected JSON from the body of the POST request
-    let body = JSON.parse(event.body)
-    // //create a data point with health as the measurement name, a field value for heart beat, and userID tag
-    const dataPoint = new Point('health')
-        .tag('userID', body['userID'])
-        .floatField('heartRate', body['heartbeatRate'])
-    // //write data point
-    await writeApi.writePoint(dataPoint)
-
-    //close write API
-    await writeApi.close().then(() => {
-        console.log('WRITE FINISHED')
+    const {payload, data}= await formatData(dataIn, {
+        measurement: 'Potencia',
+        ubicacion: 'omicasTest',
+        dispositivo: 'moduloPotencia',
     })
+    // await connection.writePoints(payload)
+    // await connection.writePoints(data)
+    connection.useDefaultTags(data.tags);
+    const point1 = new Point('Potencia')
+        .floatField('VBatt', 1000)
+        .floatField('VStepUp', 2000)
+    connection.writePoint(point1);
 
-    //send back response to the client
-    const response = {
-        statusCode: 200,
-        body: JSON.stringify('Write successful'),
-    }
+    await connection.close().then(
+        () => console.log('WRITE FINISHED'),
+        (e) => console.error(e))
 }

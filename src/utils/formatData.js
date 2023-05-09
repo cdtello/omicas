@@ -1,6 +1,6 @@
 exports.formatData = async (dataIn, params = {}) => {
     const { measurement, ubicacion, dispositivo } = params
-    const data = [
+    const data = 
         {
             measurement,
             fields: dataIn.object,
@@ -9,7 +9,8 @@ exports.formatData = async (dataIn, params = {}) => {
                 ubicacion,
                 dispositivo,
             },
-        },
-    ]
-    return { payload: data }
+    },
+        
+    payload = { payload: data }
+    return { payload, data }
 }
