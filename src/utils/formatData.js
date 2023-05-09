@@ -1,3 +1,4 @@
+const { Point } = require('@influxdata/influxdb-client')
 exports.formatData = async (dataIn, params = {}) => {
     const { measurement, ubicacion, dispositivo } = params
     const data = 
@@ -9,8 +10,12 @@ exports.formatData = async (dataIn, params = {}) => {
                 ubicacion,
                 dispositivo,
             },
-    },
+    }
+    const point = new Point('Potencia')
+    for (let key in dataIn.object){ 
+        point.floatField(key, dataIn.object[key])
+    }
         
-    payload = { payload: data }
-    return { payload, data }
+    
+    return { point, data }
 }
