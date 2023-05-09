@@ -4,5 +4,8 @@
   },
   "devDependencies": {
     "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "influx": "^5.9.3"
   }
 }
