@@ -11,34 +11,30 @@ provider:
     - Effect: Allow
       Action:
         - timestream:WriteRecords
-      Resource: arn:aws:timestream:*:*:database/my-database-name/table/my-table-name
+      Resource: arn:aws:timestream:*:*:database/omicas-device-table-test-tesis/table/omicas-device-table
 
 
 plugins:
  - serverless-offline
- - serverless-iam-roles-per-function
  
 resources:
   Resources:
-    MyTimestreamDatabase:
-      Type: "AWS::Timestream::Database"
+    MyDatabase:
+      Type: 'AWS::Timestream::Database'
       Properties:
-        DatabaseName: "my-database-name"
-        Tags:
-          - Key: "Name"
-            Value: "my-database-name"
+        DatabaseName: omicas-device-database
           
     MyTimestreamTable:
       Type: "AWS::Timestream::Table"
       Properties:
-        DatabaseName: "my-database-name"
-        TableName: "my-table-name"
+        DatabaseName: "omicas-device-database"
+        TableName: "omicas-device-table"
         RetentionProperties:
           MemoryStoreRetentionPeriodInHours: '24'
           MagneticStoreRetentionPeriodInDays: '7'
         Tags:
           - Key: "Name"
-            Value: "my-table-name"
+            Value: "omicas-device-table"
 functions:
   hello:
     handler: 'src/functions/handler.hello'
@@ -62,6 +58,6 @@ functions:
           measureName: 'VBatt'
           measureValue: '$.VBatt'
           measureTime: '$.time'
-          databaseName: 'my-database-name'
-          tableName: 'my-table-name'
+          databaseName: 'omicas-device-table-test-tesis'
+          tableName: 'omicas-device-table'
           

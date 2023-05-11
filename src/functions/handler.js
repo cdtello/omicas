@@ -1,6 +1,6 @@
 'use strict'
-const AWS = require('aws-sdk');
-const timestream = new AWS.TimestreamWrite();
+const AWS = require('aws-sdk')
+const timestream = new AWS.TimestreamWrite()
 const { influxConnection } = require('../persistence/influxDbConecction')
 const { readInfluxDB } = require('../services/readInfluxDB')
 const { writeInfluxDB } = require('../services/writeInfluxDB')
@@ -29,39 +29,40 @@ module.exports.hello = async (event) => {
     }
 }
 
-module.exports.hello = async (event) => {
-    const record = event.Records[0];
-    const data = JSON.parse(Buffer.from(record.kinesis.data, 'base64').toString('utf8'));
-  
+module.exports.insert = async (event) => {
+    const record = event.Records[0]
+    const data = JSON.parse(
+        Buffer.from(record.kinesis.data, 'base64').toString('utf8')
+    )
+
     const dimensions = [
-      { Name: 'measurement', Value: data.measurement },
-      { Name: 'ubicacion', Value: data.ubicacion },
-      { Name: 'dispositivo', Value: data.dispositivo },
-      { Name: 'DeviceEUI', Value: data.DeviceEUI }
-    ];
-    
-    const measureName = 'VBatt';
-    const measureValue = data.VBatt;
-    const measureTime = new Date(data.time);
-  
+        { Name: 'measurement', Value: data.measurement },
+        { Name: 'ubicacion', Value: data.ubicacion },
+        { Name: 'dispositivo', Value: data.dispositivo },
+        { Name: 'DeviceEUI', Value: data.DeviceEUI },
+        { Name: 'VBatt', Value: data.VBatt },
+        { Name: 'VStepUp', Value: data.VStepUp },
+    ]
+
+    const measureName = data.measurement
+    const measureTime = new Date(data.time)
+
     const params = {
-      DatabaseName: 'my-database-name',
-      TableName: 'my-table-name',
-      Records: [
-        {
-          Dimensions: dimensions,
-          MeasureName: measureName,
-          MeasureValue: `${measureValue}`,
-          MeasureValueType: 'DOUBLE',
-          Time: `${measureTime.getTime()}`
-        }
-      ]
-    };
-  
-    try {
-      await timestream.writeRecords(params).promise();
-      console.log(`Successfully wrote record with VBatt: ${measureValue}`);
-    } catch (error) {
-      console.error(`Error writing record to Timestream: ${error}`);
+        DatabaseName: 'omicas-device-database',
+        TableName: 'omicas-device-table',
+        Records: [
+            {
+                Dimensions: dimensions,
+                MeasureName: measureName,
+                Time: `${measureTime.getTime()}`,
+            },
+        ],
     }
-  };
+
+    try {
+        await timestream.writeRecords(params).promise()
+        console.log(`Successfully wrote record with VBatt: ${measureValue}`)
+    } catch (error) {
+        console.error(`Error writing record to Timestream: ${error}`)
+    }
+}
