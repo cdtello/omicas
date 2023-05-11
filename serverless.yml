@@ -10,9 +10,12 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - timestream:WriteRecords
-      Resource: arn:aws:timestream:*:*:database/omicas-device-table-test-tesis/table/omicas-device-table
-
+        - timestream:*
+      Resource: arn:aws:timestream:*:*:database/omicas-device-database/table/omicas-device-table
+    - Effect: Allow
+      Action:
+        - timestream:*
+      Resource: "*"
 
 plugins:
  - serverless-offline
@@ -35,6 +38,7 @@ resources:
         Tags:
           - Key: "Name"
             Value: "omicas-device-table"
+# arn:aws:lambda:us-east-1:280184369463:function:omicas-dev-insert
 functions:
   hello:
     handler: 'src/functions/handler.hello'
@@ -44,20 +48,6 @@ functions:
           path: hello
   insert:
     handler: 'src/functions/handler.insert'
-    events:
-      - timestream:
-          dimensions:
-            - Name: 'measurement'
-              Value: 'String'
-            - Name: 'ubicacion'
-              Value: 'String'
-            - Name: 'dispositivo'
-              Value: 'String'
-            - Name: 'DeviceEUI'
-              Value: 'String'
-          measureName: 'VBatt'
-          measureValue: '$.VBatt'
-          measureTime: '$.time'
-          databaseName: 'omicas-device-table-test-tesis'
-          tableName: 'omicas-device-table'
-          
+
+
+

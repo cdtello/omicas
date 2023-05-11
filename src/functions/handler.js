@@ -30,22 +30,18 @@ module.exports.hello = async (event) => {
 }
 
 module.exports.insert = async (event) => {
-    const record = event.Records[0]
-    const data = JSON.parse(
-        Buffer.from(record.kinesis.data, 'base64').toString('utf8')
-    )
-
     const dimensions = [
-        { Name: 'measurement', Value: data.measurement },
-        { Name: 'ubicacion', Value: data.ubicacion },
-        { Name: 'dispositivo', Value: data.dispositivo },
-        { Name: 'DeviceEUI', Value: data.DeviceEUI },
-        { Name: 'VBatt', Value: data.VBatt },
-        { Name: 'VStepUp', Value: data.VStepUp },
+        { Name: 'measurement', Value: 'Potencia' },
+        { Name: 'ubicacion', Value: 'OmicasTest' },
+        { Name: 'dispositivo', Value: '1234' },
+        { Name: 'DeviceEUI', Value: '1234' },
+        { Name: 'VBatt', Value: '1000' },
+        { Name: 'VStepUp', Value: '2000' },
     ]
 
-    const measureName = data.measurement
-    const measureTime = new Date(data.time)
+    const measureName = 'Potencia'
+    const measureTime = new Date()
+    const measureValue = '0.5'
 
     const params = {
         DatabaseName: 'omicas-device-database',
@@ -54,6 +50,7 @@ module.exports.insert = async (event) => {
             {
                 Dimensions: dimensions,
                 MeasureName: measureName,
+                MeasureValue: measureValue,
                 Time: `${measureTime.getTime()}`,
             },
         ],
