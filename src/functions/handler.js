@@ -11,8 +11,11 @@ module.exports.hello = async (event) => {
     console.log('payload-> ', payload);
     console.log('WirelessDeviceId-> ', WirelessDeviceId);
     const bodyPayload = {
-        deveui: WirelessDeviceId, // lo que llega del paylodar
-        object: payload,
+        deveui: WirelessDeviceId,
+        object: {
+                    VBatt: payload.clearVBatt,
+                    VStepUp: payload.VStepUp,
+                },
     }
     writeInfluxDB(bodyPayload)
     return {
