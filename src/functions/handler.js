@@ -13,7 +13,7 @@ module.exports.hello = async (event) => {
     const bodyPayload = {
         deveui: WirelessDeviceId,
         object: {
-                    VBatt: payload.clearVBatt,
+                    VBatt: payload.VBatt,
                     VStepUp: payload.VStepUp,
                 },
     }
