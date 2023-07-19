@@ -9,9 +9,11 @@ module.exports.hello = async (event) => {
     // readInfluxDB(event, 'hola');
     console.log('event-> ', event);
 
-    const { payload, wirelessDeviceId: deveui } = event;
+    const { payload, WirelessDeviceId } = event;
+    console.log('payload-> ', payload);
+    console.log('WirelessDeviceId-> ', WirelessDeviceId);
     const bodyPayload = {
-        deveui,
+        deveui: WirelessDeviceId, // lo que llega del paylodar
         object: payload,
     }
     writeInfluxDB(bodyPayload)
