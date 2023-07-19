@@ -6,8 +6,6 @@ const { readInfluxDB } = require('../services/readInfluxDB')
 const { writeInfluxDB } = require('../services/writeInfluxDB')
 
 module.exports.hello = async (event) => {
-    // readInfluxDB(event, 'hola');
-    console.log('event-> ', event);
 
     const { payload, WirelessDeviceId } = event;
     console.log('payload-> ', payload);
