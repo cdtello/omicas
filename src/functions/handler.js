@@ -7,14 +7,15 @@ const { writeInfluxDB } = require('../services/writeInfluxDB')
 
 module.exports.hello = async (event) => {
     // readInfluxDB(event, 'hola');
-    const testBody = {
-        deveui: 'ac1f09fffe0a9c17', // lo que llega del paylodar
-        object: {
-            VBatt: 1000, //
-            VStepUp: 1000, //
-        },
-    }
-    writeInfluxDB(testBody)
+    console.log('event-> ', event);
+    // const testBody = {
+    //     deveui: 'ac1f09fffe0a9c17', // lo que llega del paylodar
+    //     object: {
+    //         VBatt: 1000, //
+    //         VStepUp: 1000, //
+    //     },
+    // }
+    //writeInfluxDB(testBody)
     return {
         statusCode: 200,
         body: JSON.stringify(
