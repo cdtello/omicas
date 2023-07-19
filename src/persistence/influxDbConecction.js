@@ -13,6 +13,7 @@ exports.influxConnection = async (type) => {
         type === 1
             ? (result = await new InfluxDB({ url, token }).getWriteApi(org, bucket))
             : (result = await new InfluxDB({ url, token }).getQueryApi(org, bucket))
+        console.log( 'conecction ->', result );
         return result
     } catch (error) {
         throw 'Error Influx Connection';
