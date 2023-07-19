@@ -4,9 +4,14 @@ const { url, token, org, bucket } = require('../../env')
 
 //lambda event handler, this code is ran on every external request
 exports.influxConnection = async (type) => {
-    let result
-    type === 1
-        ? (result = await new InfluxDB({ url, token }).getWriteApi(org, bucket))
-        : (result = await new InfluxDB({ url, token }).getQueryApi(org, bucket))
-    return result
+    try {
+        let result
+        type === 1
+            ? (result = await new InfluxDB({ url, token }).getWriteApi(org, bucket))
+            : (result = await new InfluxDB({ url, token }).getQueryApi(org, bucket))
+        return result
+    } catch (error) {
+        throw 'Error Influx Connection';
+    }
+    
 }
