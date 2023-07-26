@@ -1,5 +1,5 @@
 const { Point } = require('@influxdata/influxdb-client')
-exports.formatData = async (dataIn, params = {}) => {
+export const formatData = async (dataIn, params: any) => {
     const { measurement, ubicacion, dispositivo } = params
     const data = {
         measurement,

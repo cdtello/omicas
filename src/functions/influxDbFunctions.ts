@@ -1,21 +1,17 @@
-'use strict'
-const AWS = require('aws-sdk')
+import AWS from 'aws-sdk'
+import { writeInfluxDB } from '../services/writeInfluxDB'
+import { APIGatewayProxyHandler } from 'aws-lambda'
+
 const timestream = new AWS.TimestreamWrite()
-const { influxConnection } = require('../persistence/influxDbConecction')
-const { readInfluxDB } = require('../services/readInfluxDB')
-const { writeInfluxDB } = require('../services/writeInfluxDB')
-
-module.exports.hello = async (event) => {
-
-    const { payload, WirelessDeviceId } = event;
-    console.log('payload-> ', payload);
-    console.log('WirelessDeviceId-> ', WirelessDeviceId);
+export const pushInfluxDb: APIGatewayProxyHandler = async (event) => {
+    // const { payload, WirelessDeviceId } = event;
+    const payload = 'payload'
+    const WirelessDeviceId = 'abcd'
+    console.log('payload-> ', payload)
+    console.log('WirelessDeviceId-> ', WirelessDeviceId)
     const bodyPayload = {
         deveui: WirelessDeviceId,
-        object: {
-                    VBatt: payload.VBatt,
-                    VStepUp: payload.VStepUp,
-                },
+        object: payload,
     }
     writeInfluxDB(bodyPayload)
     return {
@@ -32,7 +28,7 @@ module.exports.hello = async (event) => {
     }
 }
 
-module.exports.insert = async (event) => {
+export const insert = async (event) => {
     const dimensions = [
         { Name: 'measurement', Value: 'Potencia' },
         { Name: 'ubicacion', Value: 'OmicasTest' },

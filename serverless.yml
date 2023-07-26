@@ -19,6 +19,7 @@ provider:
 
 plugins:
  - serverless-offline
+ - serverless-plugin-typescript
  
 resources:
   Resources:
@@ -40,14 +41,20 @@ resources:
             Value: "omicas-device-table"
 # arn:aws:lambda:us-east-1:280184369463:function:omicas-dev-insert
 functions:
-  hello:
-    handler: 'src/functions/handler.hello'
+  pushDecodeIntoInfluxDB:
+    handler: 'src/functions/influxDbFunctions.pushInfluxDb'
+    events:
+      - http:
+          method: get
+          path: hello
+  decodeFunction:
+    handler: 'src/functions/decodeFunctions.handler'
     events:
       - http:
           method: get
           path: hello
   insert:
-    handler: 'src/functions/handler.insert'
+    handler: 'src/functions/influxDbFunctions.insert'
 
 
 

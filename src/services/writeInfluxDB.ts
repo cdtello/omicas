@@ -1,7 +1,7 @@
-const { influxConnection } = require('../persistence/influxDbConecction')
-const { formatData } = require('../utils/formatData')
+import { influxConnection } from '../persistence/influxDbConecction'
+import { formatData } from '../utils/formatData'
 
-exports.writeInfluxDB = async (dataIn) => {
+export const writeInfluxDB = async (dataIn) => {
     try {
         const connection = await influxConnection(1)
 
@@ -10,9 +10,11 @@ exports.writeInfluxDB = async (dataIn) => {
             ubicacion: 'omicasTest',
             dispositivo: 'moduloPotencia',
         })
+        console.log('*** Data: ', data)
+        console.log('*** point: ', point)
         // await connection.writePoints(payload)
         // await connection.writePoints(data)
-        connection.useDefaultTags(data.tags)
+        // connection.useDefaultTags(data.tags)
 
         connection.writePoint(point)
 
@@ -21,7 +23,6 @@ exports.writeInfluxDB = async (dataIn) => {
             (e) => console.error(e)
         )
     } catch (error) {
-        console.log("Error escritura")
+        console.log('Error escritura')
     }
-    
 }
