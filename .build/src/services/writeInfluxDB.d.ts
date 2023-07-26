@@ -1,1 +1,1 @@
-export declare const writeInfluxDB: (dataIn: any) => Promise<void>
+export declare const writeInfluxDB: (dataIn: any) => Promise<void>;

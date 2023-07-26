@@ -1,1 +1,1 @@
-declare const influxConnection: any
+declare const influxConnection: any;

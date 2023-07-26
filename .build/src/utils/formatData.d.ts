@@ -1,15 +1,12 @@
-export declare const formatData: (
-    dataIn: any,
-    params: any
-) => Promise<{
-    point: any
+export declare const formatData: (dataIn: any, params: any) => Promise<{
+    point: any;
     data: {
-        measurement: any
-        fields: any
+        measurement: any;
+        fields: any;
         tags: {
-            DeviceEUI: any
-            ubicacion: any
-            dispositivo: any
-        }
-    }
-}>
+            DeviceEUI: any;
+            ubicacion: any;
+            dispositivo: any;
+        };
+    };
+}>;

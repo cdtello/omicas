@@ -17,7 +17,7 @@ const writeInfluxDB = async (dataIn) => {
         await connection.close().then(() => console.log('WRITE FINISHED'), (e) => console.error(e));
     }
     catch (error) {
-        console.log("Error escritura");
+        console.log('Error escritura');
     }
 };
 exports.writeInfluxDB = writeInfluxDB;
