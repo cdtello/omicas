@@ -18,7 +18,9 @@ provider:
           Action:
             - timestream:*
           Resource: "*"
-
+package:
+  individually: true
+  
 plugins:
  - serverless-offline
  - serverless-plugin-typescript
