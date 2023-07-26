@@ -1,26 +1,19 @@
 import { APIGatewayProxyHandler } from 'aws-lambda'
-import { decoded } from 'src/utils/models'
+import { Decoded } from 'src/utils/models'
 
 export const handler: APIGatewayProxyHandler = async (event) => {
-    console.log(event)
-    // const payload =  Decode(event.PayloadData, 2)
-    const payload = Decode('abcd', 2)
+    const body = event.body || ''
+    const { PayloadData, Fport } = JSON.parse(body);
+    const payload = await Decode(PayloadData);
     return {
         statusCode: 200,
-        body: JSON.stringify(
-            {
-                data: payload,
-                input: event,
-            },
-            null,
-            2
-        ),
+        body: JSON.stringify(payload),
     }
 }
 
-function Decode(data: string, fPort) {
+function Decode(data: string) {
     const bytes = Buffer.from(data, 'base64')
-    const decoded: decoded = {}
+    const decoded: Decoded = {}
     for (var i = 0; i < bytes.length; ) {
         var channel_id = bytes[i++]
         var status = bytes[i++]

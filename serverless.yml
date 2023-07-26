@@ -54,7 +54,7 @@ functions:
     handler: 'src/functions/decodeFunctions.handler'
     events:
       - http:
-          method: get
+          method: post
           path: decodeFunction
   insertIntoTimeStream:
     handler: 'src/functions/influxDbFunctions.insert'

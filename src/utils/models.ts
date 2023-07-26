@@ -1,4 +1,4 @@
-export interface decoded {
+export interface Decoded {
     VBatt?: number
     VStepUp?: number
     CBatt?: number
