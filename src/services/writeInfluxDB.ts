@@ -12,17 +12,14 @@ export const writeInfluxDB = async (dataIn) => {
         })
         console.log('*** Data: ', data)
         console.log('*** point: ', point)
-        // await connection.writePoints(payload)
-        // await connection.writePoints(data)
-        // connection.useDefaultTags(data.tags)
 
-        connection.writePoint(point)
+        await connection.writePoint(point)
 
         await connection.close().then(
             () => console.log('WRITE FINISHED'),
             (e) => console.error(e)
         )
     } catch (error) {
-        console.log('Error escritura')
+        console.log('Error escritura: ', error);
     }
 }

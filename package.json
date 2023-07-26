@@ -12,9 +12,10 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@aws-sdk/client-timestream-write": "^3.377.0",
     "@influxdata/influxdb-client": "^1.33.2",
     "@influxdata/influxdb-client-apis": "^1.33.2",
-    "aws-sdk": "^2.1376.0",
+    "aws-sdk": "^2.1422.0",
     "influx": "^5.9.3"
   }
 }

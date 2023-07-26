@@ -1,30 +1,20 @@
-import AWS from 'aws-sdk'
+import { TimestreamWriteClient, WriteRecordsCommand } from "@aws-sdk/client-timestream-write";
 import { writeInfluxDB } from '../services/writeInfluxDB'
-import { APIGatewayProxyHandler } from 'aws-lambda'
 
-const timestream = new AWS.TimestreamWrite()
-export const pushInfluxDb: APIGatewayProxyHandler = async (event) => {
+const timestream = new TimestreamWriteClient({ region: "eu-central-1" });
+export const pushInfluxDb = async (event) => {
     // const { payload, WirelessDeviceId } = event;
-    const payload = 'payload'
-    const WirelessDeviceId = 'abcd'
-    console.log('payload-> ', payload)
-    console.log('WirelessDeviceId-> ', WirelessDeviceId)
+    const payload = event.decodingoutput.payload;
+    const WirelessDeviceId = event.WirelessDeviceId;
+    console.log('*** event-> ', event)
     const bodyPayload = {
         deveui: WirelessDeviceId,
         object: payload,
     }
-    writeInfluxDB(bodyPayload)
+    await writeInfluxDB(bodyPayload)
     return {
         statusCode: 200,
-        body: JSON.stringify(
-            {
-                message:
-                    'Go Serverless v1.0! Your function executed successfully!',
-                input: event,
-            },
-            null,
-            2
-        ),
+        data: 'hello data',
     }
 }
 
@@ -54,9 +44,11 @@ export const insert = async (event) => {
             },
         ],
     }
-
+      
+      const command = new WriteRecordsCommand(params);
+      
     try {
-        await timestream.writeRecords(params).promise()
+        await timestream.send(command);
         console.log(`Successfully wrote record with VBatt: ${measureValue}`)
     } catch (error) {
         console.error(`Error writing record to Timestream: ${error}`)

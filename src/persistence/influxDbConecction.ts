@@ -3,12 +3,12 @@ import { url, token, org, bucket } from '../../env'
 
 export const influxWriteConnection = async () => {
     try {
-        let result: WriteApi = await new InfluxDB({ url, token }).getWriteApi(
-            org,
-            bucket
-        )
-        console.log('conecction ->', result)
-        return result
+        const influxDB = new InfluxDB({ url, token });
+        const writeApi = influxDB.getWriteApi(org, bucket);
+        writeApi.useDefaultTags({ region: 'west' });
+
+        console.log('conecction ->', writeApi);
+        return writeApi
     } catch (error) {
         throw 'Error Influx Connection'
     }
