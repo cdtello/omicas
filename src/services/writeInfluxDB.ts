@@ -1,9 +1,9 @@
-import { influxConnection } from '../persistence/influxDbConecction'
+import { influxWriteConnection } from '../persistence/influxDbConecction'
 import { formatData } from '../utils/formatData'
 
 export const writeInfluxDB = async (dataIn) => {
     try {
-        const connection = await influxConnection(1)
+        const connection = await influxWriteConnection()
 
         const { point, data } = await formatData(dataIn, {
             measurement: 'Potencia',

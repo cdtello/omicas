@@ -1,10 +1,10 @@
 import { APIGatewayProxyHandler } from 'aws-lambda'
 import { decoded } from 'src/utils/models'
 
-export const handler: APIGatewayProxyHandler  = async (event) => {
+export const handler: APIGatewayProxyHandler = async (event) => {
     console.log(event)
     // const payload =  Decode(event.PayloadData, 2)
-    const payload =  Decode("abcd", 2)
+    const payload = Decode('abcd', 2)
     return {
         statusCode: 200,
         body: JSON.stringify(

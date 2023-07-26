@@ -1,8 +1,8 @@
-const { influxConnection } = require('../persistence/influxDbConecction')
+import { influxReadConnection } from '../persistence/influxDbConecction'
 
 exports.readInfluxDB = async (event, query) => {
-    let res = []
-    const connection = await influxConnection(0)
+    const result: { [key: string]: any }[] = []
+    const connection = await influxReadConnection()
     const queryTest = `
         from(bucket: "sensors")
         |> range(start: -1h)
@@ -12,13 +12,13 @@ exports.readInfluxDB = async (event, query) => {
         `
     await connection.queryRows(queryTest, {
         next(row, tableMeta) {
-            const o = tableMeta.toObject(row)
-            res.push(o)
+            const item = tableMeta.toObject(row)
+            result.push(item)
         },
         complete() {
             //nested for loops aren't ideal, this could be optimized but gets the job done
-            for (let i = 0; i < res.length; i++) {
-                console.log('******* res -> ', res[i])
+            for (let i = 0; i < result.length; i++) {
+                console.log('******* res -> ', result[i])
             }
         },
         error(error) {
