@@ -3,4 +3,6 @@ export interface Decoded {
     VStepUp?: number
     CBatt?: number
     CCell?: number
+    Temp?: number
+    Hum?: number
 }

@@ -18,7 +18,6 @@ function Decode(data: string) {
         var channel_type = bytes[i++]
 
         // VBATT
-
         if (channel_id === 0x04 && channel_type === 0x74) {
             console.log('1')
             decoded.VBatt = bytes[i] / 10
@@ -42,6 +41,18 @@ function Decode(data: string) {
             console.log('4')
             //decoded.CCell = bytes[i] / 10;
             decoded.CCell = readInt16LE(bytes.slice(i, i + 2)) / 10
+            i += 2
+        }
+        // Temp
+        else if (channel_id === 0x01 && channel_type === 0x67) {
+            console.log('5')
+            decoded.Temp = readInt16LE(bytes.slice(i, i + 2)) / 10
+            i += 2
+        }
+        // Hum
+        else if (channel_id === 0x01 && channel_type === 0x68) {
+            console.log('6')
+            decoded.Hum = readInt16LE(bytes.slice(i, i + 2))
             i += 2
         } else {
             break
