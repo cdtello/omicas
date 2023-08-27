@@ -64,6 +64,11 @@ functions:
       - http:
           method: get
           path: insertIntoTimeStream
-
+  processDataFunction:
+    handler: 'src/functions/dataProcess.handler'
+    events:
+      - http:
+          method: post
+          path: dataProcess
 
 
