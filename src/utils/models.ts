@@ -5,4 +5,7 @@ export interface Decoded {
     CCell?: number
     Temp?: number
     Hum?: number
+    Rad?: number
+    Vel?: number
+    Dir?: number
 }
