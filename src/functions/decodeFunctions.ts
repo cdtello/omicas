@@ -3,8 +3,12 @@ import { Decoded } from 'src/utils/models'
 export const handler = async (event) => {
     const { PayloadData } = event;
     const payload = await Decode(PayloadData);
+    const measureTime = new Date()
     return {
         statusCode: 200,
+        year: measureTime.getFullYear(),
+        Month:measureTime.getMonth(),
+        Day: measureTime.getDay(),
         payload,
     }
 }
@@ -52,7 +56,25 @@ function Decode(data: string) {
         // Hum
         else if (channel_id === 0x01 && channel_type === 0x68) {
             console.log('6')
-            decoded.Hum = readInt16LE(bytes.slice(i, i + 2))
+            decoded.Hum = readInt16LE(bytes.slice(i, i + 2)) /10
+            i += 2
+        } 
+        // Radiacion
+        else if (channel_id === 0x01 && channel_type === 0x66) {
+            console.log('7')
+            decoded.Rad = readInt16LE(bytes.slice(i, i + 2)) * 10
+            i += 2
+        }
+        // Velocidad Viento
+        else if (channel_id === 0x01 && channel_type === 0x92) {
+            console.log('8')
+            decoded.Vel = readInt16LE(bytes.slice(i, i + 2)) / 10
+            i += 2
+        }
+        // Direccion Viento
+        else if (channel_id === 0x01 && channel_type === 0x84) {
+            console.log('9')
+            decoded.Dir = readInt16LE(bytes.slice(i, i + 2))
             i += 2
         } else {
             break
