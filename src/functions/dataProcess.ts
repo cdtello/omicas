@@ -50,7 +50,7 @@ export const handler = async (event, context) => {
         const day = date.getUTCDate().toString().padStart(2, '0');
         
 
-        const s3Key = `year=${year}/month=${month}/day=${day}/${rowData.deviceId}_${timestamp}.parquet`;
+        const s3Key = `year=${year}/month=${month}/day=${day}/file_${timestamp}.parquet`;
 
         const s3Params: AWS.S3.PutObjectRequest = {
             Bucket: 'omicas-phenoagro-cured-data',
