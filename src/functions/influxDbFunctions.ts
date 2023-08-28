@@ -19,38 +19,41 @@ export const pushInfluxDb = async (event) => {
 }
 
 export const insert = async (event) => {
+    const payload = event.decodingoutput.payload;
+    const WirelessDeviceId = event.WirelessDeviceId;
     const dimensions = [
-        { Name: 'measurement', Value: 'Potencia' },
-        { Name: 'ubicacion', Value: 'OmicasTest' },
-        { Name: 'dispositivo', Value: '1234' },
-        { Name: 'DeviceEUI', Value: '1234' },
-        { Name: 'VBatt', Value: '1000' },
-        { Name: 'VStepUp', Value: '2000' },
+        { Name: 'module', Value: 'Potencia' },
+        { Name: 'location', Value: 'OmicasTest' },
+        { Name: 'deviceId', Value: WirelessDeviceId },
     ]
 
-    const measureName = 'Potencia'
-    const measureTime = new Date()
-    const measureValue = '0.5'
+    for (const key in payload) {
+        // dimensions.push({ Name: key, Value: payload[key].toString() });
 
-    const params = {
-        DatabaseName: 'omicas-device-database',
-        TableName: 'omicas-device-table',
-        Records: [
-            {
-                Dimensions: dimensions,
-                MeasureName: measureName,
-                MeasureValue: measureValue,
-                Time: `${measureTime.getTime()}`,
-            },
-        ],
+        const measureTime = new Date()
+    
+        const params = {
+            DatabaseName: 'omicas-device-database',
+            TableName: 'omicas-device-table',
+            Records: [
+                {
+                    Dimensions: dimensions,
+                    MeasureName: key,
+                    MeasureValue: payload[key].toString(),
+                    Time: `${measureTime.getTime()}`,
+                },
+            ],
+        }
+          
+        const command = new WriteRecordsCommand(params);
+          
+        try {
+            await timestream.send(command);
+            console.log(`Successfully wrote record with device: ${WirelessDeviceId}`)
+        } catch (error) {
+            console.error(`Error writing record to Timestream: ${error}`)
+        }
     }
-      
-      const command = new WriteRecordsCommand(params);
-      
-    try {
-        await timestream.send(command);
-        console.log(`Successfully wrote record with VBatt: ${measureValue}`)
-    } catch (error) {
-        console.error(`Error writing record to Timestream: ${error}`)
-    }
+
+
 }
