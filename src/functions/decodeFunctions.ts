@@ -6,9 +6,9 @@ export const handler = async (event) => {
     const measureTime = new Date()
     return {
         statusCode: 200,
-        year: measureTime.getFullYear(),
-        Month:measureTime.getMonth(),
-        Day: measureTime.getDay(),
+        year: measureTime.getUTCFullYear().toString(),
+        month: (measureTime.getUTCMonth() + 1).toString().padStart(2, '0'),
+        day: measureTime.getUTCDate().toString().padStart(2, '0'),
         payload,
     }
 }
@@ -21,60 +21,102 @@ function Decode(data: string) {
         var status = bytes[i++]
         var channel_type = bytes[i++]
 
-        // VBATT
+        // Battery Voltage
         if (channel_id === 0x04 && channel_type === 0x74) {
             console.log('1')
             decoded.VBatt = bytes[i] / 10
             i += 1
         }
-        // VStepUp
+        // StepUp Voltage
         else if (channel_id === 0x05 && channel_type === 0x74) {
             console.log('2')
             decoded.VStepUp = bytes[i] / 10
             i += 1
         }
-        // CBatt
+        // Battery Current
         else if (channel_id === 0x06 && channel_type === 0x80) {
             console.log('3')
             // decoded.CBatt = bytes[i] / 10;
             decoded.CBatt = readInt16LE(bytes.slice(i, i + 2)) / 10
             i += 2
         }
-        // CCell
+        // Cell Current
         else if (channel_id === 0x07 && channel_type === 0x80) {
             console.log('4')
             //decoded.CCell = bytes[i] / 10;
             decoded.CCell = readInt16LE(bytes.slice(i, i + 2)) / 10
             i += 2
         }
-        // Temp
+        // Air Temperature
         else if (channel_id === 0x01 && channel_type === 0x67) {
             console.log('5')
-            decoded.Temp = readInt16LE(bytes.slice(i, i + 2)) / 10
+            decoded.AirTemp = readInt16LE(bytes.slice(i, i + 2)) / 10
             i += 2
         }
-        // Hum
+        // Air Humidity
         else if (channel_id === 0x01 && channel_type === 0x68) {
             console.log('6')
-            decoded.Hum = readInt16LE(bytes.slice(i, i + 2)) /10
+            decoded.AirHum = readInt16LE(bytes.slice(i, i + 2)) /10
             i += 2
         } 
-        // Radiacion
+        // Radiation
         else if (channel_id === 0x01 && channel_type === 0x66) {
             console.log('7')
             decoded.Rad = readInt16LE(bytes.slice(i, i + 2)) * 10
             i += 2
         }
-        // Velocidad Viento
+        // Air Velocity
         else if (channel_id === 0x01 && channel_type === 0x92) {
             console.log('8')
-            decoded.Vel = readInt16LE(bytes.slice(i, i + 2)) / 10
+            decoded.AirVel = readInt16LE(bytes.slice(i, i + 2)) / 10
             i += 2
         }
-        // Direccion Viento
+        // Air Direction
         else if (channel_id === 0x01 && channel_type === 0x84) {
             console.log('9')
-            decoded.Dir = readInt16LE(bytes.slice(i, i + 2))
+            decoded.AirDir = readInt16LE(bytes.slice(i, i + 2)) / 10
+            i += 2
+        }
+        // Soil Conductivity
+        else if (channel_id === 0x03 && channel_type === 0x66) {
+            console.log('10')
+            decoded.SoilCond = readInt16LE(bytes.slice(i, i + 2)) / 10
+            i += 2
+        }
+        // Soil PH
+        else if (channel_id === 0x03 && channel_type === 0x7E) {
+            console.log('11')
+            decoded.SoilPh = readInt16LE(bytes.slice(i, i + 2)) / 10 
+            i += 2
+        }
+        // Soil Humidity
+        else if (channel_id === 0x03 && channel_type === 0x68) {
+            console.log('12')
+            decoded.SoilHum = readInt16LE(bytes.slice(i, i + 2)) / 10 
+            i += 2
+        }
+        // Soil Temperaure
+        else if (channel_id === 0x03 && channel_type === 0x67) {
+            console.log('13')
+            decoded.SoilTemp = readInt16LE(bytes.slice(i, i + 2)) / 10
+            i += 2
+        } 
+        // Soil Nitrogen
+        else if (channel_id === 0x03 && channel_type === 0x92) {
+            console.log('14')
+            decoded.SoilNit = readInt16LE(bytes.slice(i, i + 2)) / 10
+            i += 2
+        }
+        // Soil Phosphorus
+        else if (channel_id === 0x03 && channel_type === 0x84) {
+            console.log('15')
+            decoded.SoilPhos = readInt16LE(bytes.slice(i, i + 2)) / 10
+            i += 2
+        }
+        // Soil Potasium
+        else if (channel_id === 0x03 && channel_type === 0x7A) {
+            console.log('16')
+            decoded.SoilPot = readInt16LE(bytes.slice(i, i + 2)) / 10
             i += 2
         } else {
             break

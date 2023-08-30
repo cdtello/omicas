@@ -3,9 +3,16 @@ export interface Decoded {
     VStepUp?: number
     CBatt?: number
     CCell?: number
-    Temp?: number
-    Hum?: number
+    AirTemp?: number
+    AirHum?: number
     Rad?: number
-    Vel?: number
-    Dir?: number
+    AirVel?: number
+    AirDir?: number
+    SoilCond?: number
+    SoilPh?: number
+    SoilHum?: number
+    SoilTemp?: number
+    SoilNit?: number
+    SoilPhos?: number
+    SoilPot?: number
 }
